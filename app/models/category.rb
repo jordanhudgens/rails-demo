@@ -5,7 +5,10 @@ class Category < ApplicationRecord
 
   def self.preview_mode
     all.includes(:articles).map do |category|
-      category.articles.limit(3)
+      {
+        title: category.title,
+        articles: category.articles.limit(3)
+      }
     end
   end
 end
