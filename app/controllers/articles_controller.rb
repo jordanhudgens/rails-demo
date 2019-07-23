@@ -48,7 +48,7 @@ class ArticlesController < ApplicationController
   # PATCH/PUT /articles/1
   # PATCH/PUT /articles/1.json
   def update
-    if current_user == @article.user
+    if current_user == @article.user || current_user.roles.include?(:super_admin)
       respond_to do |format|
         if @article.update(article_params)
           format.html { redirect_to @article, notice: 'Article was successfully updated.' }
@@ -66,8 +66,6 @@ class ArticlesController < ApplicationController
   # DELETE /articles/1
   # DELETE /articles/1.json
   def destroy
-    puts "User", current_user.inspect
-    puts "Article", @article.inspect
     if current_user == @article.user || current_user.roles.include?(:super_admin)
       @article.destroy
       respond_to do |format|
@@ -90,7 +88,7 @@ class ArticlesController < ApplicationController
       params.require(:article).permit(
         :title,
         :content,
-        :category
+        :category_id
       )
     end
 end
