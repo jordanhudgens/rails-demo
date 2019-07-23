@@ -3,6 +3,15 @@ class Category < ApplicationRecord
 
   has_many :articles, dependent: :destroy
 
+  def self.with_articles
+    all.includes(:articles).map do |category|
+      {
+        title: category.title,
+        articles: category.articles
+      }
+    end
+  end
+
   def self.preview_mode
     all.includes(:articles).map do |category|
       {

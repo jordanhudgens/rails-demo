@@ -2,15 +2,15 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index]
 
+  access all: [:index], user: { except: [:destroy, :new, :create, :update, :edit] }, editor: { except: [:destroy] }, super_admin: :all
+
   # GET /articles
   # GET /articles.json
   def index
     if !current_user
       @categories = Category.preview_mode
-    elsif current_user.roles.include?(:super_admin)
-      @articles = Article.by_category
     else
-      @articles = current_user.articles.by_category
+      @categories = Category.with_articles
     end
   end
 
