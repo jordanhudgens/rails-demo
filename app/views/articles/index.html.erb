@@ -13,8 +13,11 @@
 
       <div>
         <%= link_to 'Show', article %>
-        <%= link_to 'Edit', edit_article_path(article) %>
-        <%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %>
+
+        <% if current_user == article.user || current_user.roles.include?(:super_admin) %>
+          <%= link_to 'Edit', edit_article_path(article) %>
+          <%= link_to 'Destroy', article, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <% end %>
       </div>
     </div>
     <hr />
