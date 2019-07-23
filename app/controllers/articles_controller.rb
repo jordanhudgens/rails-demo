@@ -5,10 +5,12 @@ class ArticlesController < ApplicationController
   # GET /articles
   # GET /articles.json
   def index
-    if current_user.roles.include?(:super_admin)
-      @articles = Article.all
+    if !current_user
+      @articles = Article.by_category
+    elsif current_user.roles.include?(:super_admin)
+      @articles = Article.by_category
     else
-      @articles = current_user.articles
+      @articles = current_user.articles.by_category
     end
   end
 
