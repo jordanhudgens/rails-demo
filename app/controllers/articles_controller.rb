@@ -6,7 +6,7 @@ class ArticlesController < ApplicationController
   # GET /articles.json
   def index
     if !current_user
-      @articles = Article.by_category
+      @categories = Category.preview_mode
     elsif current_user.roles.include?(:super_admin)
       @articles = Article.by_category
     else
